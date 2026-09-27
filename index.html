@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Indira Morales, CPI</title>
+<link rel="icon" type="image/jpeg" href="logo.jpeg">
+<meta name="description" content="Contabilidad integral, declaraciones tributarias, planillas CCSS y asesoría financiera para empresas, emprendedores y personas naturales en Costa Rica.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Libre+Franklin:wght@400;500;600;700&family=Petit+Formal+Script&display=swap" rel="stylesheet">
+
+<style>
+  /* ---------- tokens ---------- */
+  :root {
+    --bg: #FAF6EC;
+    --panel: #FFFFFF;
+    --panel-tint: #F2EAD8;
+    --contrast: #0F1F3D;
+    --contrast-2: #17284E;
+    --text: #1B2436;
+    --text-muted: #5C6579;
+    --text-on-contrast: #F4F1E8;
+    --text-on-contrast-muted: rgba(244,241,232,0.66);
+    --accent: #A9761F;
+    --accent-2: #C99A3F;
+    --border: rgba(27,36,54,0.14);
+    --border-on-contrast: rgba(244,241,232,0.16);
+    --focus: #2E6FE0;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0B1122;
+      --panel: #131B30;
+      --panel-tint: #17203A;
+      --contrast: #050914;
+      --contrast-2: #0B1224;
+      --text: #EDEAE0;
+      --text-muted: rgba(237,234,224,0.64);
+      --text-on-contrast: #F4F1E8;
+      --text-on-contrast-muted: rgba(244,241,232,0.64);
+      --accent: #D9A94A;
+      --accent-2: #E7C077;
+      --border: rgba(237,234,224,0.14);
+      --border-on-contrast: rgba(244,241,232,0.14);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0B1122;
+    --panel: #131B30;
+    --panel-tint: #17203A;
+    --contrast: #050914;
+    --contrast-2: #0B1224;
+    --text: #EDEAE0;
+    --text-muted: rgba(237,234,224,0.64);
+    --text-on-contrast: #F4F1E8;
+    --text-on-contrast-muted: rgba(244,241,232,0.64);
+    --accent: #D9A94A;
+    --accent-2: #E7C077;
+    --border: rgba(237,234,224,0.14);
+    --border-on-contrast: rgba(244,241,232,0.14);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Libre Franklin", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, .label, .btn, .nav-link, .ledger-no {
+    font-family: "Oswald", "Arial Narrow", Arial, sans-serif;
+  }
+
+  a { color: var(--accent); }
+  a:hover { color: var(--accent-2); }
+  a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 40px); }
+
+  .label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  p { line-height: 1.65; margin: 0; }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 14px 24px;
+    border-radius: 3px;
+    text-decoration: none;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  }
+  @media (prefers-reduced-motion: reduce) { .btn { transition: none; } }
+  .btn-primary { background: var(--contrast); color: var(--text-on-contrast); }
+  .btn-primary:hover { color: var(--text-on-contrast); background: var(--contrast-2); transform: translateY(-1px); }
+  .btn-outline { background: transparent; color: var(--text); border: 1.5px solid var(--text); }
+  .btn-outline:hover { color: var(--text); background: color-mix(in srgb, currentColor 8%, transparent); transform: translateY(-1px); }
+  .btn-gold { background: var(--accent); color: var(--contrast); }
+  .btn-gold:hover { color: var(--contrast); background: var(--accent-2); transform: translateY(-1px); }
+
+  /* ---------- nav ---------- */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: var(--contrast);
+    border-bottom: 1px solid var(--border-on-contrast);
+  }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 68px; gap: 20px; }
+  .nav-mark { font-size: 15px; font-weight: 600; letter-spacing: 0.05em; color: var(--text-on-contrast); white-space: nowrap; display: flex; align-items: center; gap: 10px; }
+  .nav-mark img { height: 44px; width: 44px; object-fit: cover; border-radius: 8px; flex-shrink: 0; }
+  .nav-mark span { color: var(--accent-2); }
+  .nav-links { display: flex; gap: 30px; }
+  .nav-links a { font-size: 11.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-on-contrast-muted); font-weight: 500; }
+  .nav-links a:hover { color: var(--text-on-contrast); }
+  @media (max-width: 760px) { .nav-links { display: none; } }
+
+  /* ---------- hero ---------- */
+  .hero {
+    position: relative;
+    padding: clamp(56px, 8vw, 92px) 0 clamp(48px, 7vw, 76px);
+    background-image: repeating-linear-gradient(
+      to bottom, transparent, transparent 33px, var(--border) 33px, var(--border) 34px
+    );
+    background-position: top 120px left 0;
+  }
+  .hero-grid { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: clamp(32px, 6vw, 64px); align-items: center; }
+  @media (max-width: 860px) { .hero-grid { grid-template-columns: 1fr; } }
+
+  .hero h1 {
+    font-size: clamp(2rem, 4.6vw, 3rem);
+    line-height: 1.06;
+    font-weight: 700;
+    letter-spacing: 0.005em;
+    color: var(--text);
+    margin: 14px 0 4px;
+    text-wrap: balance;
+  }
+  .hero .credential {
+    font-size: 13.5px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 22px;
+  }
+  .hero .thesis {
+    font-size: clamp(1.1rem, 2vw, 1.32rem);
+    font-weight: 500;
+    color: var(--text);
+    max-width: 46ch;
+    margin-bottom: 22px;
+    text-wrap: balance;
+  }
+  .hero .kicker-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 30px;
+    padding: 9px 18px 9px 14px;
+    margin-bottom: 30px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .cta-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .cta-row .text-link { font-size: 13px; font-weight: 600; letter-spacing: 0.04em; text-decoration: underline; text-underline-offset: 3px; }
+
+  .hero-mark {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    background: linear-gradient(160deg, var(--contrast), var(--contrast-2));
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 30px 60px rgba(11,17,34,0.28);
+  }
+  .hero-mark svg { width: 46%; height: 46%; }
+  .hero-note {
+    position: absolute;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 11px 15px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text);
+    max-width: 180px;
+    box-shadow: 0 14px 28px rgba(11,17,34,0.16);
+  }
+  .hero-note.n1 { left: -6%; bottom: 12%; }
+  .hero-note.n2 { right: -6%; top: 10%; background: var(--accent); color: var(--contrast); }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-grid > * { animation: rise 0.6s ease both; }
+    .hero-grid > *:nth-child(2) { animation-delay: 0.08s; }
+    @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+  }
+
+  /* ---------- section heads ---------- */
+  .section-head { max-width: 620px; margin: 0 auto 40px; text-align: center; }
+  .section-head h2 { font-size: clamp(1.55rem, 3vw, 2rem); font-weight: 700; color: var(--text); margin: 10px 0 12px; text-wrap: balance; }
+  .contrast-band .section-head h2 { color: var(--text-on-contrast); }
+  .section-head p { color: var(--text-muted); font-size: 15px; }
+  .contrast-band .section-head p { color: var(--text-on-contrast-muted); }
+
+  /* ---------- services ledger ---------- */
+  .services { padding: 68px 0; }
+  .ledger { border-top: 1px solid var(--border); }
+  .ledger-row {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    align-items: baseline;
+    gap: 18px;
+    padding: 16px 4px;
+    border-bottom: 1px solid var(--border);
+  }
+  .ledger-no {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.04em;
+  }
+  .ledger-row span.item { font-size: 15px; font-weight: 500; color: var(--text); }
+  .ledger-two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 48px; }
+  @media (max-width: 760px) { .ledger-two { grid-template-columns: 1fr; } }
+
+  /* ---------- why choose us ---------- */
+  .contrast-band { background: var(--contrast); padding: 72px 0; }
+  .why-list { display: flex; flex-direction: column; }
+  .why-row {
+    display: grid;
+    grid-template-columns: 44px 1fr;
+    gap: 20px;
+    padding: 22px 0;
+    border-top: 1px solid var(--border-on-contrast);
+  }
+  .why-row:last-child { border-bottom: 1px solid var(--border-on-contrast); }
+  .why-row svg { color: var(--accent-2); }
+  .why-row p { color: var(--text-on-contrast); font-size: 15.5px; font-weight: 500; max-width: 56ch; }
+
+  /* ---------- signature banner ---------- */
+  .signature-band {
+    background: linear-gradient(100deg, var(--accent), var(--accent-2));
+  }
+  .signature-inner { padding: 38px 0; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px; }
+  .signature-inner .promise { font-family: "Oswald", sans-serif; font-weight: 700; font-size: clamp(1rem, 2vw, 1.3rem); text-transform: uppercase; letter-spacing: 0.01em; color: var(--contrast); }
+  .signature-inner .script { font-family: "Petit Formal Script", cursive; font-size: clamp(1.9rem, 4vw, 2.6rem); color: var(--contrast); }
+
+  /* ---------- values ---------- */
+  .values { padding: 52px 0; }
+  .values-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 28px; }
+  @media (max-width: 640px) { .values-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .value-item { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; }
+  .value-item svg { color: var(--text); }
+  .value-item span { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text); }
+
+  /* ---------- contact ---------- */
+  .contact { background: var(--contrast); padding: 72px 0 40px; }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: start; }
+  @media (max-width: 860px) { .contact-grid { grid-template-columns: 1fr; } }
+  .contact h2 { font-size: clamp(1.5rem, 3vw, 1.9rem); font-weight: 700; color: var(--text-on-contrast); margin: 10px 0 14px; text-wrap: balance; }
+  .contact > .wrap > .contact-grid > div:first-child p { color: var(--text-on-contrast-muted); font-size: 14.5px; max-width: 42ch; margin-bottom: 28px; }
+
+  .contact-list { display: flex; flex-direction: column; gap: 16px; }
+  .contact-list a { display: flex; align-items: center; gap: 12px; color: var(--text-on-contrast); font-size: 15px; font-weight: 600; }
+  .contact-list a:hover { color: var(--accent-2); }
+  .contact-list .icon-circle {
+    width: 38px; height: 38px; border-radius: 50%; background: var(--contrast-2);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--accent-2);
+  }
+
+  .form-panel { background: var(--contrast-2); border-radius: 4px; padding: 30px; border: 1px solid var(--border-on-contrast); }
+  .form-panel .label { color: var(--accent-2); margin-bottom: 18px; display: block; }
+  .field { display: flex; flex-direction: column; gap: 14px; }
+  .field input, .field textarea {
+    font-family: "Libre Franklin", sans-serif;
+    font-size: 14.5px;
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 3px;
+    border: 1px solid var(--border-on-contrast);
+    background: rgba(244,241,232,0.06);
+    color: var(--text-on-contrast);
+  }
+  .field input::placeholder, .field textarea::placeholder { color: var(--text-on-contrast-muted); }
+  .field input:focus, .field textarea:focus { outline: 2px solid var(--accent-2); outline-offset: 1px; background: rgba(244,241,232,0.1); }
+  .form-status { font-size: 13px; color: var(--accent-2); min-height: 18px; margin-top: 10px; }
+
+  .footer-bottom {
+    border-top: 1px solid var(--border-on-contrast);
+    margin-top: 46px;
+    padding-top: 22px;
+    font-size: 12.5px;
+    color: var(--text-on-contrast-muted);
+  }
+
+  .fab {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--contrast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 12px 26px rgba(11,17,34,0.35);
+    z-index: 50;
+    transition: transform 0.15s ease;
+  }
+  .fab:hover { transform: scale(1.06); color: var(--contrast); }
+  @media (prefers-reduced-motion: reduce) { .fab { transition: none; } }
+</style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-BE5VGE3XNQ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-BE5VGE3XNQ');
+</script>
+</head>
+<body>
+
+<div class="nav">
+  <div class="wrap nav-inner">
+    <div class="nav-mark"><img src="logo.jpeg" alt="MF Servicios Contables y TI">MF SERVICIOS <span>CONTABLES Y TI</span></div>
+    <div class="nav-links">
+      <a href="#servicios">Servicios</a>
+      <a href="#servicios-ti">Tecnología</a>
+      <a href="#por-que">Por qué elegirnos</a>
+      <a href="#contacto">Contacto</a>
+    </div>
+    <a class="btn btn-gold" href="https://wa.me/50687026824" target="_blank" rel="noopener" style="padding:9px 16px; font-size:11.5px;">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17l1.4-4A8 8 0 1112 20a8 8 0 01-4-1.1z"/><path d="M9 10c0 2.8 2.2 5 5 5"/></svg>
+      WhatsApp
+    </a>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="label">Contaduría pública &middot; Costa Rica</div>
+      <h1>Indira<br>Morales Calderón</h1>
+      <div class="credential">Licenciada en Contaduría Pública</div>
+      <p class="thesis">Transformamos los números en decisiones que impulsan el crecimiento de su empresa.</p>
+      <div class="kicker-pill">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg>
+        Más que contabilidad&hellip; estrategias para hacer crecer su negocio
+      </div>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="https://wa.me/50687026824" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17l1.4-4A8 8 0 1112 20a8 8 0 01-4-1.1z"/><path d="M9 10c0 2.8 2.2 5 5 5"/></svg>
+          Escribir por WhatsApp
+        </a>
+        <a class="btn btn-outline" href="tel:+50687026824">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h3l1.6 4.2-2 1.6a13 13 0 006 6l1.6-2L19 15.5V19a1.6 1.6 0 01-1.6 1.6C10 20.6 3.4 14 3.4 6.6A1.6 1.6 0 015 4z"/></svg>
+          8702-6824
+        </a>
+        <a class="text-link" href="#contacto" style="color: var(--text);">Solicitar una cotización &rarr;</a>
+      </div>
+    </div>
+
+    <div class="hero-mark">
+      <svg viewBox="0 0 120 120" fill="none">
+        <circle cx="60" cy="60" r="52" stroke="var(--accent-2)" stroke-width="2" opacity="0.6"/>
+        <rect x="34" y="66" width="10" height="20" rx="1.5" fill="var(--accent-2)" opacity="0.85"/>
+        <rect x="50" y="54" width="10" height="32" rx="1.5" fill="var(--accent)"/>
+        <rect x="66" y="42" width="10" height="44" rx="1.5" fill="var(--accent-2)"/>
+        <path d="M34 50l16-14 12 8 20-20" stroke="#F4F1E8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <path d="M74 16h12v12" stroke="#F4F1E8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+      <div class="hero-note n1">Declaraciones tributarias siempre al día</div>
+      <div class="hero-note n2">Estados financieros claros</div>
+    </div>
+  </div>
+</section>
+
+<section id="servicios" class="services">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="label">Lo que hago por usted</div>
+      <h2>Servicios profesionales</h2>
+      <p>Contabilidad integral, cumplimiento tributario y asesoría financiera para empresas, emprendedores y personas naturales en Costa Rica.</p>
+    </div>
+
+    <div class="ledger ledger-two">
+      <div>
+        <div class="ledger-row"><span class="ledger-no">No. 01</span><span class="item">Contabilidad integral para empresas y emprendedores</span></div>
+        <div class="ledger-row"><span class="ledger-no">No. 02</span><span class="item">Elaboración y análisis de Estados Financieros</span></div>
+        <div class="ledger-row"><span class="ledger-no">No. 03</span><span class="item">Flujo de Caja y proyección financiera</span></div>
+        <div class="ledger-row"><span class="ledger-no">No. 04</span><span class="item">Análisis de rentabilidad y margen de utilidad</span></div>
+        <div class="ledger-row"><span class="ledger-no">No. 05</span><span class="item">Control y optimización de costos y gastos</span></div>
+        <div class="ledger-row"><span class="ledger-no">No. 06</span><span class="item">Presupuestos financieros</span></div>
+        <div class="ledger-row"><span class="ledger-no">No. 07</span><span class="item">Cuentas por cobrar y cuentas por pagar</span></div>
+      </div>
+      <div>
+        <div class="ledger-row"><span class="ledger-no">No. 08</span><span class="item">Conciliaciones bancarias</span></div>
+        <div class="ledger-row"><span class="ledger-no">No. 09</span><span class="item">Facturación electrónica</span></div>
+        <div class="ledger-row"><span class="ledger-no">No. 10</span><span class="item">Declaraciones tributarias y cumplimiento fiscal</span></div>
+        <div class="ledger-row"><span class="ledger-no">No. 11</span><span class="item">Planillas CCSS e INS</span></div>
+        <div class="ledger-row"><span class="ledger-no">No. 12</span><span class="item">Control de activos fijos y depreciaciones</span></div>
+        <div class="ledger-row"><span class="ledger-no">No. 13</span><span class="item">Preparación de información para auditorías</span></div>
+        <div class="ledger-row"><span class="ledger-no">No. 14</span><span class="item">Asesoría financiera para la toma de decisiones</span></div>
+      </div>
+    </div>
+
+    <p style="max-width: 720px; margin: 32px auto 0; text-align: center; color: var(--text); font-size: 15px; line-height: 1.7;">Ofrecemos servicios contables y de tecnología (TI) personalizados, con honorarios ajustados al tamaño, volumen de operaciones y necesidades específicas de cada negocio. Agenda una asesoría gratuita de 30 minutos y recibe una propuesta clara, transparente y adaptada a las necesidades de tu empresa.</p>
+    <p style="max-width: 720px; margin: 14px auto 0; text-align: center; color: var(--text-muted); font-size: 14px; font-style: italic; line-height: 1.7;">Revisamos tu situación, ponemos en orden tus obligaciones pendientes y te ayudamos a regularizarte ante Hacienda y la CCSS, para que puedas operar con tranquilidad, orden y respaldo profesional.</p>
+  </div>
+</section>
+
+<section id="servicios-ti" class="services">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="label">Soluciones tecnológicas</div>
+      <h2>Servicios de Tecnología (TI)</h2>
+      <p>Desarrollo, automatización y gestión de información para que su negocio opere con más orden y eficiencia.</p>
+    </div>
+
+    <div class="ledger ledger-two">
+      <div>
+        <div class="ledger-row"><span class="ledger-no">No. 01</span><span class="item">Organización y respaldo de información</span></div>
+        <div class="ledger-row"><span class="ledger-no">No. 02</span><span class="item">Automatización de procesos</span></div>
+        <div class="ledger-row"><span class="ledger-no">No. 03</span><span class="item">Soluciones tecnológicas</span></div>
+        <div class="ledger-row"><span class="ledger-no">No. 04</span><span class="item">Desarrollo y mantenimiento de aplicaciones</span></div>
+        <div class="ledger-row"><span class="ledger-no">No. 05</span><span class="item">Reportes avanzados</span></div>
+        <div class="ledger-row"><span class="ledger-no">No. 06</span><span class="item">Aplicaciones web con Oracle APEX</span></div>
+      </div>
+      <div>
+        <div class="ledger-row"><span class="ledger-no">No. 07</span><span class="item">Integración con bases de datos</span></div>
+        <div class="ledger-row"><span class="ledger-no">No. 08</span><span class="item">Automatización de procesos manuales</span></div>
+        <div class="ledger-row"><span class="ledger-no">No. 09</span><span class="item">Flujos de trabajo</span></div>
+        <div class="ledger-row"><span class="ledger-no">No. 10</span><span class="item">Migración y manejo de datos</span></div>
+        <div class="ledger-row"><span class="ledger-no">No. 11</span><span class="item">Automatización de controles</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="por-que" class="contrast-band">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="label">Claridad para decidir</div>
+      <h2>¿Por qué elegirnos?</h2>
+    </div>
+    <div class="why-list">
+      <div class="why-row">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg>
+        <p>Descubra si su empresa realmente está generando ganancias.</p>
+      </div>
+      <div class="why-row">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10.5h18"/><circle cx="17" cy="14.5" r="1" fill="currentColor" stroke="none"/></svg>
+        <p>Mantenga un control efectivo de su flujo de efectivo.</p>
+      </div>
+      <div class="why-row">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 00-3 11.2c.5.4.8 1 .8 1.6v.2h4.4v-.2c0-.6.3-1.2.8-1.6A6 6 0 0012 3z"/></svg>
+        <p>Tome decisiones con información financiera clara y oportuna.</p>
+      </div>
+      <div class="why-row">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg>
+        <p>Evite multas y mantenga sus obligaciones tributarias al día.</p>
+      </div>
+      <div class="why-row">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.3"/><path d="M5 20c0-3.6 3.1-6.2 7-6.2s7 2.6 7 6.2"/></svg>
+        <p>Atención personalizada, ética, confidencial y enfocada en resultados.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="signature-band">
+  <div class="wrap signature-inner">
+    <div class="promise">Su tranquilidad financiera es nuestra prioridad</div>
+    <div class="script">Confianza que genera Resultados</div>
+  </div>
+</section>
+
+<section class="values">
+  <div class="wrap values-grid">
+    <div class="value-item">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="12" rx="2"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+      <span>Profesionalismo</span>
+    </div>
+    <div class="value-item">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="5"/><path d="M9 13.5L7 21l5-3 5 3-2-7.5"/></svg>
+      <span>Experiencia</span>
+    </div>
+    <div class="value-item">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12.5l4-4 4 3 3-3 4 4-3 3-1-1-3 3-4-3-4 1z"/></svg>
+      <span>Compromiso</span>
+    </div>
+    <div class="value-item">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/></svg>
+      <span>Resultados</span>
+    </div>
+  </div>
+</section>
+
+<section id="contacto" class="contact">
+  <div class="wrap">
+    <div class="contact-grid">
+      <div>
+        <div class="label">Hablemos</div>
+        <h2>Su cartera de contabilidad de confianza</h2>
+        <p>Escríbame por WhatsApp, llame o complete el formulario y le responderé a la brevedad para conversar sobre su empresa.</p>
+        <div class="contact-list">
+          <a href="https://wa.me/50687026824" target="_blank" rel="noopener">
+            <span class="icon-circle"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17l1.4-4A8 8 0 1112 20a8 8 0 01-4-1.1z"/><path d="M9 10c0 2.8 2.2 5 5 5"/></svg></span>
+            8702-6824 (WhatsApp)
+          </a>
+          <a href="tel:+50687026824">
+            <span class="icon-circle"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h3l1.6 4.2-2 1.6a13 13 0 006 6l1.6-2L19 15.5V19a1.6 1.6 0 01-1.6 1.6C10 20.6 3.4 14 3.4 6.6A1.6 1.6 0 015 4z"/></svg></span>
+            8702-6824 (Llamada)
+          </a>
+          <a href="mailto:mfservicioscontablesyti@gmail.com">
+            <span class="icon-circle"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span>
+            mfservicioscontablesyti@gmail.com
+          </a>
+        </div>
+      </div>
+
+      <div class="form-panel">
+        <span class="label">Formulario de contacto</span>
+        <div class="field" id="contact-form">
+          <input type="text" id="cf-name" placeholder="Nombre completo">
+          <input type="email" id="cf-email" placeholder="Correo electrónico">
+          <input type="tel" id="cf-phone" placeholder="Teléfono">
+          <textarea id="cf-message" rows="4" placeholder="Cuéntame sobre su empresa o consulta"></textarea>
+          <a id="cf-submit" class="btn btn-gold" href="mailto:mfservicioscontablesyti@gmail.com?subject=Consulta%20de%20servicios%20contables" style="justify-content:center;">Enviar consulta</a>
+          <div class="form-status" id="cf-status">Se abrirá su aplicación de correo con el mensaje listo para enviar.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      &copy; Indira Natalia Morales Calderón &middot; Licenciada en Contaduría Pública &middot; Costa Rica
+    </div>
+  </div>
+</section>
+
+<a class="fab" href="https://wa.me/50687026824" target="_blank" rel="noopener" aria-label="Escribir por WhatsApp">
+  <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17l1.4-4A8 8 0 1112 20a8 8 0 01-4-1.1z"/><path d="M9 10c0 2.8 2.2 5 5 5"/></svg>
+</a>
+
+<script>
+  (function () {
+    var nameEl = document.getElementById('cf-name');
+    var emailEl = document.getElementById('cf-email');
+    var phoneEl = document.getElementById('cf-phone');
+    var messageEl = document.getElementById('cf-message');
+    var submitEl = document.getElementById('cf-submit');
+
+    function updateHref() {
+      var subject = encodeURIComponent('Consulta de servicios contables');
+      var body = encodeURIComponent(
+        'Nombre: ' + nameEl.value.trim() +
+        '\nTeléfono: ' + phoneEl.value.trim() +
+        '\nCorreo: ' + emailEl.value.trim() +
+        '\n\nMensaje:\n' + messageEl.value.trim()
+      );
+      submitEl.href = 'mailto:mfservicioscontablesyti@gmail.com?subject=' + subject + '&body=' + body;
+    }
+
+    [nameEl, emailEl, phoneEl, messageEl].forEach(function (el) {
+      el.addEventListener('input', updateHref);
+    });
+  })();
+</script>
+</body>
+</html>
